@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'com.github.johnrengelman.shadow' version '7.1.1'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group 'me.noeffort.alwaysinventory'
+version '1.1.20'
+
+task dev {
+    dependsOn shadowJar
+    doLast {
+        copy {
+            from 'build/libs/AlwaysInventory.jar'
+            into project.properties['development.snapshots_dir']
+        }
+    }
+}
+
+task prod {
+    dependsOn shadowJar
+    doLast {
+        copy {
+            from 'build/libs/AlwaysInventory.jar'
+            into project.properties['production.releases_dir']
+        }
+    }
+}
+
+shadowJar {
+    minimize()
+    relocate 'org.xerial', 'me.noeffort.alwaysinventory.shaded.sqlite'
+    archiveBaseName.set('AlwaysInventory')
+    archiveClassifier.set('')
+    archiveVersion.set('')
+}
+
+processResources {
+    filesMatching('plugin.yml') {
+        expand 'version': project.version
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://oss.sonatype.org/repositories/snapshots/' }
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+}
+
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
+    implementation 'org.xerial:sqlite-jdbc:3.36.0.2'
+}

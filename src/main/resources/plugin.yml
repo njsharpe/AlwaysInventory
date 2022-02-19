@@ -1,0 +1,23 @@
+name: AlwaysInventory
+main: me.noeffort.alwaysinventory.AlwaysInventory
+version: ${version}
+author: NoEffort
+
+api-version: 1.13
+
+commands:
+  alwaysinventory:
+    aliases: [ai]
+    description: Primary command for AlwaysInventory
+    usage: /<command> [args]
+    permission: alwaysinventory.use
+  peek:
+    description: View a player's inventory
+    usage: /<command>
+    permission: alwaysinventory.peek
+
+permissions:
+  alwaysinventory.use:
+    default: op
+  alwaysinventory.peek:
+    default: op
